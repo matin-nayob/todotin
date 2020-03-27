@@ -1,13 +1,10 @@
-defmodule Todotin.Model.Item do
-  defstruct user_id: nil, item_id: nil, data: nil, title: nil, message: nil
+defmodule Todotin.Model.User do
+  defstruct user_id: nil, name: nil
 
-  alias Todotin.Model.Item
+  alias Todotin.Model.User
 
   @type t :: %User{
           user_id: String.t(),
-          item_id: String.t(),
-          data: String.t(),
-          title: String.t(),
-          message: String.t()
+          name: String.t()
         }
 end
