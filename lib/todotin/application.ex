@@ -7,13 +7,14 @@ defmodule Todotin.Application do
 
   def start(_type, _args) do
     children = [
-      # Starts a worker by calling: Todotin.Worker.start_link(arg)
-      # {Todotin.Worker, arg}
+      {Plug.Cowboy, scheme: :http, plug: Todotin.Router.Main, options: [port: cowboy_port()]}
     ]
 
-    # See https://hexdocs.pm/elixir/Supervisor.html
-    # for other strategies and supported options
     opts = [strategy: :one_for_one, name: Todotin.Supervisor]
     Supervisor.start_link(children, opts)
+  end
+
+  defp cowboy_port do
+    Application.get_env(:web, :cowboy_port, 8081)
   end
 end
