@@ -1,0 +1,68 @@
+{
+  "ModelName": "todotin",
+  "ModelMetadata": {
+    "Author": "",
+    "DateCreated": "Mar 27, 2020, 11:05 PM",
+    "DateLastModified": "Mar 27, 2020, 11:10 PM",
+    "Description": "",
+    "Version": "1.0"
+  },
+  "DataModel": [
+    {
+      "TableName": "todotin",
+      "KeyAttributes": {
+        "PartitionKey": {
+          "AttributeName": "pk",
+          "AttributeType": "S"
+        },
+        "SortKey": {
+          "AttributeName": "sk",
+          "AttributeType": "S"
+        }
+      },
+      "NonKeyAttributes": [
+        {
+          "AttributeName": "data",
+          "AttributeType": "S"
+        }
+      ],
+      "GlobalSecondaryIndexes": [
+        {
+          "IndexName": "gsisk",
+          "KeyAttributes": {
+            "PartitionKey": {
+              "AttributeName": "sk",
+              "AttributeType": "S"
+            },
+            "SortKey": {
+              "AttributeName": "pk",
+              "AttributeType": "S"
+            }
+          },
+          "Projection": {
+            "ProjectionType": "ALL"
+          }
+        },
+        {
+          "IndexName": "gsidata",
+          "KeyAttributes": {
+            "PartitionKey": {
+              "AttributeName": "pk",
+              "AttributeType": "S"
+            },
+            "SortKey": {
+              "AttributeName": "data",
+              "AttributeType": "S"
+            }
+          },
+          "Projection": {
+            "ProjectionType": "ALL"
+          }
+        }
+      ],
+      "DataAccess": {
+        "MySql": {}
+      }
+    }
+  ]
+}
