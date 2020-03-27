@@ -15,6 +15,6 @@ defmodule Todotin.Application do
   end
 
   defp cowboy_port do
-    Application.get_env(:web, :cowboy_port, 8081)
+    Application.get_env(:todotin, :cowboy_port, 8080)
   end
 end
