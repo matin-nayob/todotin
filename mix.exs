@@ -25,7 +25,8 @@ defmodule Todotin.MixProject do
       {:plug_cowboy, ">= 2.0.0"},
       {:ex_aws_dynamo, ">= 3.0.0"},
       {:jason, ">= 1.0.0"},
-      {:hackney, ">= 1.0.0"}
+      {:hackney, ">= 1.0.0"},
+      {:elixir_uuid, ">= 1.2.0"}
     ]
   end
 end
