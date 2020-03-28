@@ -1,12 +1,12 @@
 defmodule Todotin.Model.Item do
-  defstruct user_id: nil, item_id: nil, expiry: nil, title: nil, message: nil
+  defstruct [:user_id, :item_id, :status, :title, :message]
 
   alias Todotin.Model.Item
 
   @type t :: %Item{
           user_id: String.t(),
           item_id: String.t(),
-          expiry: DateTime.t(),
+          status: String.t(),
           title: String.t(),
           message: String.t()
         }
