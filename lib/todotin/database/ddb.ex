@@ -2,7 +2,7 @@ defmodule Todotin.Database.Ddb do
   alias ExAws.Dynamo
   @table "todotin"
 
-  @spec get_user(Todotin.DDB.User) :: {:ok}
+  @spec create_user(Todotin.DDB.User.t()) :: {:ok}
   def create_user(user) do
     Dynamo.put_item(
       @table,
@@ -13,7 +13,15 @@ defmodule Todotin.Database.Ddb do
     {:ok}
   end
 
-  def create_item do
+  @spec create_item(Todotin.DDB.Item.t()) :: {:ok}
+  def create_item(item) do
+    Dynamo.put_item(
+      @table,
+      item
+    )
+    |> ExAws.request!()
+
+    {:ok}
   end
 
   @spec get_user(String.t()) :: {:ok, Todotin.DDB.User.t()} | {:error, String.t()}
