@@ -11,6 +11,8 @@ defmodule Todotin.Router.Main do
     send_resp(conn, 200, "Hello there")
   end
 
+  forward "/user", to: Todotin.Router.User
+
   match _ do
     send_resp(conn, 404, "No here")
   end
