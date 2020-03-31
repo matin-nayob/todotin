@@ -5,7 +5,12 @@ defmodule Todotin.Router.Task do
   plug(:dispatch)
 
   get "/" do
-    send_resp(conn, 200, "Hello User Task")
+    send_resp(conn, 404, "Hello User Task")
+  end
+
+  get "/:task_id" do
+    {:ok, body} = Todotin.Controllers.Task.get_task(conn.params["user_id"], task_id)
+    send_resp(conn, 200, body)
   end
 
   put "/new" do

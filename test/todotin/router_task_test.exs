@@ -45,7 +45,15 @@ defmodule Todotin.Routers.TaskTest do
     assert resp.status == 422
   end
 
-  test "get task"
+  test "get task", context do
+    resp =
+      :get
+      |> conn("/user/#{context.user.user_id}/task/#{context.task.task_id}", "")
+      |> Main.call(@opts)
+
+    assert resp.state == :sent
+    assert resp.status == 200
+  end
 
   test "get all tasks"
 end

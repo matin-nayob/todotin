@@ -10,11 +10,11 @@ defmodule Todotin.Controllers.Task do
     {:ok, Jason.encode!(%{message: "Task #{task.task_id} created for user #{user_id}"})}
   end
 
-  @spec get_user(String.t()) :: {:ok, String.t()}
-  def get_user(user_id) do
-    case Todotin.Database.Ddb.get_user(user_id) do
-      {:ok, ddb_user} ->
-        {:ok, Todotin.DDB.User.decode(ddb_user) |> Jason.encode!()}
+  @spec get_task(String.t(), String.t()) :: {:ok, String.t()}
+  def get_task(user_id, task_id) do
+    case Todotin.Database.Ddb.get_task(user_id, task_id) do
+      {:ok, ddb_task} ->
+        {:ok, Todotin.DDB.Task.decode(ddb_task) |> Jason.encode!()}
 
       error ->
         error

@@ -13,7 +13,7 @@ defmodule Todotin.DDB.User do
   @spec decode(User.t()) :: Todotin.Model.User.t()
   def decode(ddb_user) do
     %Todotin.Model.User{
-      user_id: ddb_user.pk,
+      user_id: String.split(ddb_user.pk, "#") |> List.last(),
       name: ddb_user.name
     }
   end

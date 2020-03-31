@@ -60,7 +60,25 @@ defmodule Todotin.Database.Ddb do
     {:ok, results}
   end
 
-  def get_task do
+  @spec get_task(String.t(), String.t()) :: {:ok, Todotin.DDB.Task.t()} | {:error, String.t()}
+  def get_task(user_id, task_id) do
+    result =
+      Dynamo.query(
+        @table,
+        expression_attribute_values: [pk: "User\##{user_id}", sk: "Task\##{task_id}"],
+        key_condition_expression: "pk = :pk AND sk = :sk"
+      )
+      |> ExAws.request!()
+      |> Dynamo.decode_item(as: Todotin.DDB.Task)
+      |> List.first()
+
+    case result do
+      nil ->
+        {:error, "Task #{task_id} not found"}
+
+      _ ->
+        {:ok, result}
+    end
   end
 
   def get_all_tasks do
