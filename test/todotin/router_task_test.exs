@@ -8,16 +8,41 @@ defmodule Todotin.Routers.TaskTest do
 
   setup do
     user = Todotin.Model.User.new("task.router@test.com", "Task Router Test")
+    task = Todotin.Model.Task.new(user.user_id, "Test Content woooooooooooo!")
 
 
-    {:ok, user: user, user_id: user.user_id}
+    {:ok, user: user, task: task}
   end
 
-  test "create task user"
+  test "create task user", context do
+    resp =
+      :put
+      |> conn("/user/new", %{:user_id => context.user.user_id, :name => context.user.name})
+      |> Main.call(@opts)
 
-  test "create task"
+    assert resp.state == :sent
+    assert resp.status == 201
+  end
 
-  test "create task fail"
+  test "create task", context do
+    resp =
+      :put
+      |> conn("/user/#{context.user.user_id}/task/new", %{:content => context.task.content})
+      |> Main.call(@opts)
+
+    assert resp.state == :sent
+    assert resp.status == 201
+  end
+
+  test "create task fail", context do
+    resp =
+      :put
+      |> conn("/user/#{context.user.user_id}/task/new", %{:value => "wrong!"})
+      |> Main.call(@opts)
+
+    assert resp.state == :sent
+    assert resp.status == 422
+  end
 
   test "get task"
 

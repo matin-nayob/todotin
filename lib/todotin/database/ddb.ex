@@ -13,11 +13,11 @@ defmodule Todotin.Database.Ddb do
     {:ok}
   end
 
-  @spec create_item(Todotin.DDB.Item.t()) :: {:ok}
-  def create_item(item) do
+  @spec create_task(Todotin.DDB.Task.t()) :: {:ok}
+  def create_task(task) do
     Dynamo.put_item(
       @table,
-      item
+      task
     )
     |> ExAws.request!()
 
@@ -60,9 +60,9 @@ defmodule Todotin.Database.Ddb do
     {:ok, results}
   end
 
-  def get_item do
+  def get_task do
   end
 
-  def get_all_items do
+  def get_all_tasks do
   end
 end
