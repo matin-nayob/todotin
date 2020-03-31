@@ -8,7 +8,8 @@ defmodule Todotin.Routers.TaskTest do
 
   setup do
     user = Todotin.Model.User.new("task.router@test.com", "Task Router Test")
-    task = Todotin.Model.Task.new(user.user_id, "Test Content woooooooooooo!")
+    task_id = "692fec7c21264e968639f05ab8a0e18d"
+    task = Todotin.Model.Task.new(user.user_id, "Test Content woooooooooooo!", task_id)
 
 
     {:ok, user: user, task: task}
@@ -27,7 +28,7 @@ defmodule Todotin.Routers.TaskTest do
   test "create task", context do
     resp =
       :put
-      |> conn("/user/#{context.user.user_id}/task/new", %{:content => context.task.content})
+      |> conn("/user/#{context.user.user_id}/task/new", %{:content => context.task.content, :task_id => context.task.task_id})
       |> Main.call(@opts)
 
     assert resp.state == :sent

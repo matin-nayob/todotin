@@ -11,6 +11,12 @@ defmodule Todotin.Router.Task do
   put "/new" do
     {status, body} =
       case conn.body_params do
+        %{"content" => content, "task_id" => task_id} ->
+          {:ok, message} =
+            Todotin.Controllers.Task.create_task(conn.params["user_id"], content, task_id)
+
+          {201, message}
+
         %{"content" => content} ->
           {:ok, message} = Todotin.Controllers.Task.create_task(conn.params["user_id"], content)
           {201, message}

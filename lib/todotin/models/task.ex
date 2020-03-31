@@ -11,11 +11,20 @@ defmodule Todotin.Model.Task do
           content: String.t()
         }
 
-  @spec new(String.t(), String.t()) :: Task.t()
-  def new(user_id, content) do
+  @spec new(String.t(), String.t(), String.t()) :: Task.t()
+  def new(user_id, content, task_id) do
+    id =
+      case task_id do
+        "" ->
+          UUID.uuid4(:hex)
+
+        _ ->
+          task_id
+      end
+
     %Task{
       user_id: user_id,
-      task_id: UUID.uuid4(:hex),
+      task_id: id,
       status: "Todo",
       content: content
     }

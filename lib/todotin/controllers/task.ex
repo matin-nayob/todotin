@@ -1,7 +1,7 @@
 defmodule Todotin.Controllers.Task do
-  @spec create_task(String.t(), String.t()) :: {:ok, String.t()}
-  def create_task(user_id, content) do
-    task = Todotin.Model.Task.new(user_id, content)
+  @spec create_task(String.t(), String.t(), String.t()) :: {:ok, String.t()}
+  def create_task(user_id, content, task_id \\ "") do
+    task = Todotin.Model.Task.new(user_id, content, task_id)
 
     task
     |> Todotin.DDB.Task.encode()
