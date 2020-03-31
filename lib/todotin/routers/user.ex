@@ -27,6 +27,8 @@ defmodule Todotin.Router.User do
     send_resp(conn, 200, body)
   end
 
+  forward "/:user_id/task", to: Todotin.Router.Task
+
   match _ do
     send_resp(conn, 404, "User No here")
   end
