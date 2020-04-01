@@ -12,7 +12,7 @@ defmodule Todotin.Controllers.Task do
     {:ok, Jason.encode!(%{message: "Task #{task.task_id} created for user #{user_id}"})}
   end
 
-  @spec get_task(map()) :: {number(), binary()}
+  @spec get_task(%{user_id: String.t(), task_id: String.t()}) :: {number(), binary()}
   def get_task(%{user_id: user_id, task_id: task_id} = props) do
     case Todotin.Database.Ddb.get_task(user_id, task_id) do
       [] ->

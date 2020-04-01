@@ -11,6 +11,8 @@ defmodule Todotin.Router.Main do
     send_resp(conn, 200, "Hello there")
   end
 
+  forward "/user/:user_id/task", to: Todotin.Router.Task
+
   forward "/user", to: Todotin.Router.User
 
   match _ do
