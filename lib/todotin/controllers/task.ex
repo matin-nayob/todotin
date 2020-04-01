@@ -1,4 +1,6 @@
 defmodule Todotin.Controllers.Task do
+  alias Todotin.Utils.Messages
+
   @spec create_task(String.t(), String.t(), String.t()) :: {:ok, String.t()}
   def create_task(user_id, content, task_id \\ "") do
     task = Todotin.Model.Task.new(user_id, content, task_id)
@@ -10,14 +12,14 @@ defmodule Todotin.Controllers.Task do
     {:ok, Jason.encode!(%{message: "Task #{task.task_id} created for user #{user_id}"})}
   end
 
-  @spec get_task(String.t(), String.t()) :: {:ok, String.t()}
-  def get_task(user_id, task_id) do
+  @spec get_task(map()) :: {number(), binary()}
+  def get_task(%{user_id: user_id, task_id: task_id} = props) do
     case Todotin.Database.Ddb.get_task(user_id, task_id) do
-      {:ok, ddb_task} ->
-        {:ok, Todotin.DDB.Task.decode(ddb_task) |> Jason.encode!()}
+      [] ->
+        {404, Jason.encode!(Messages.message_404("task not found", props))}
 
-      error ->
-        error
+      [ddb_task] ->
+        {200, Todotin.DDB.Task.decode(ddb_task) |> Jason.encode!()}
     end
   end
 

@@ -10,10 +10,12 @@ defmodule Todotin.Routers.TaskTest do
     user = Todotin.Model.User.new("task.router@test.com", "Task Router Test")
     task_id = "692fec7c21264e968639f05ab8a0e18d"
     task = Todotin.Model.Task.new(user.user_id, "Test Content woooooooooooo!", task_id)
+    task_json = Jason.encode!(%{"content"=>"Test Content woooooooooooo!","status"=>"Todo","task_id"=>"692fec7c21264e968639f05ab8a0e18d","user_id"=>"task.router@test.com"})
     task_id_2 = "abcfec7c21264e968639f05ab8a0e18d"
     task_2 = Todotin.Model.Task.new(user.user_id, "Second task!", task_id_2)
+    tasks_json = Jason.encode!([%{"content"=>"Test Content woooooooooooo!","status"=>"Todo","task_id"=>"692fec7c21264e968639f05ab8a0e18d","user_id"=>"task.router@test.com"},%{"content"=>"Second task!","status"=>"Todo","task_id"=>"abcfec7c21264e968639f05ab8a0e18d","user_id"=>"task.router@test.com"}])
 
-    {:ok, user: user, task: task, task_2: task_2}
+    {:ok, user: user, task: task, task_json: task_json, task_2: task_2, tasks_json: tasks_json}
   end
 
   test "create task user", context do
@@ -70,6 +72,7 @@ defmodule Todotin.Routers.TaskTest do
 
     assert resp.state == :sent
     assert resp.status == 200
+    assert resp.resp_body == context.task_json
   end
 
   test "get all tasks non existing", context do
@@ -90,5 +93,10 @@ defmodule Todotin.Routers.TaskTest do
 
     assert resp.state == :sent
     assert resp.status == 200
+    assert resp.resp_body == context.tasks_json
   end
+
+  test "get task by status"
+
+  test "set task status"
 end

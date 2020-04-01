@@ -14,8 +14,8 @@ defmodule Todotin.Router.Task do
   end
 
   get "/:task_id" do
-    {:ok, body} = Todotin.Controllers.Task.get_task(conn.params["user_id"], task_id)
-    send_resp(conn, 200, body)
+    {status, body} = Todotin.Controllers.Task.get_task(%{user_id: conn.params["user_id"], task_id: task_id})
+    send_resp(conn, status, body)
   end
 
   put "/new" do
