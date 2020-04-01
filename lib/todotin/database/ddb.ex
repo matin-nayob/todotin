@@ -81,6 +81,14 @@ defmodule Todotin.Database.Ddb do
     end
   end
 
-  def get_all_tasks do
+  @spec get_all_tasks(String.t()) :: [Todotin.DDB.Task] | []
+  def get_all_tasks(user_id) do
+    Dynamo.query(
+      @table,
+      expression_attribute_values: [pk: "User\##{user_id}", sk: "Task#"],
+      key_condition_expression: "pk = :pk AND begins_with(sk, :sk)"
+    )
+    |> ExAws.request!()
+    |> Dynamo.decode_item(as: Todotin.DDB.Task)
   end
 end

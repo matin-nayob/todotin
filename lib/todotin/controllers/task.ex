@@ -20,4 +20,10 @@ defmodule Todotin.Controllers.Task do
         error
     end
   end
+
+  @spec get_all_tasks(String.t()) :: [Todotin.Model.Task] | []
+  def get_all_tasks(user_id) do
+    Todotin.Database.Ddb.get_all_tasks(user_id)
+    |> Enum.map(fn x -> Todotin.DDB.Task.decode(x) end)
+  end
 end

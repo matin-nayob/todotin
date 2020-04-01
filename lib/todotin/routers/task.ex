@@ -5,7 +5,12 @@ defmodule Todotin.Router.Task do
   plug(:dispatch)
 
   get "/" do
-    send_resp(conn, 404, "Hello User Task")
+    case Todotin.Controllers.Task.get_all_tasks(conn.params["user_id"]) do
+      [] ->
+        send_resp(conn, 404, Jason.encode!(%{message: "User #{conn.params["user_id"]} has no tasks"}))
+      tasks ->
+        send_resp(conn, 200, Jason.encode!(tasks))
+    end
   end
 
   get "/:task_id" do

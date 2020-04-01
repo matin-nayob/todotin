@@ -11,7 +11,6 @@ defmodule Todotin.Routers.TaskTest do
     task_id = "692fec7c21264e968639f05ab8a0e18d"
     task = Todotin.Model.Task.new(user.user_id, "Test Content woooooooooooo!", task_id)
 
-
     {:ok, user: user, task: task}
   end
 
@@ -28,7 +27,10 @@ defmodule Todotin.Routers.TaskTest do
   test "create task", context do
     resp =
       :put
-      |> conn("/user/#{context.user.user_id}/task/new", %{:content => context.task.content, :task_id => context.task.task_id})
+      |> conn("/user/#{context.user.user_id}/task/new", %{
+        :content => context.task.content,
+        :task_id => context.task.task_id
+      })
       |> Main.call(@opts)
 
     assert resp.state == :sent
@@ -55,5 +57,23 @@ defmodule Todotin.Routers.TaskTest do
     assert resp.status == 200
   end
 
-  test "get all tasks"
+  test "get all tasks non existing", context do
+    resp =
+      :get
+      |> conn("/user/doesnt.exist@missing.com/task/", "")
+      |> Main.call(@opts)
+
+    assert resp.state == :sent
+    assert resp.status == 404
+  end
+
+  test "get all tasks", context do
+    resp =
+      :get
+      |> conn("/user/#{context.user.user_id}/task/", "")
+      |> Main.call(@opts)
+
+    assert resp.state == :sent
+    assert resp.status == 200
+  end
 end
