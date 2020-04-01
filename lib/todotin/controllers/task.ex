@@ -15,17 +15,26 @@ defmodule Todotin.Controllers.Task do
   @spec get_task(%{user_id: String.t(), task_id: String.t()}) :: {number(), binary()}
   def get_task(%{user_id: user_id, task_id: task_id} = props) do
     case Todotin.Database.Ddb.get_task(user_id, task_id) do
-      [] ->
-        {404, Jason.encode!(Messages.message_404("task not found", props))}
+      [task | _tail = []] ->
+        {200, Todotin.DDB.Task.decode(task) |> Jason.encode!()}
 
-      [ddb_task] ->
-        {200, Todotin.DDB.Task.decode(ddb_task) |> Jason.encode!()}
+      [] ->
+        {404, Messages.message_404("task not found", props)}
     end
   end
 
-  @spec get_all_tasks(String.t()) :: [Todotin.Model.Task] | []
-  def get_all_tasks(user_id) do
-    Todotin.Database.Ddb.get_all_tasks(user_id)
-    |> Enum.map(fn x -> Todotin.DDB.Task.decode(x) end)
+  @spec get_all_tasks(%{user_id: String.t()}) :: {number, binary}
+  def get_all_tasks(%{user_id: user_id} = props) do
+    tasks =
+      Todotin.Database.Ddb.get_all_tasks(user_id)
+      |> Enum.map(fn x -> Todotin.DDB.Task.decode(x) end)
+
+    case tasks do
+      [_ | _] ->
+        {200, Jason.encode!(tasks)}
+
+      [] ->
+        {404, Messages.message_404("no tasks found", props)}
+    end
   end
 end
